@@ -47,6 +47,8 @@ We use three major datasets:
 
 Good for initial classifier training
 
+Download and add to corresponding folder here: https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/  
+
 
 ### 2. FoodX-251
 
@@ -56,12 +58,16 @@ Real-world images
 
 Used for classifier fine-tuning
 
+Download and add to corresponding folder here: https://universe.roboflow.com/foodx251/foodx-251/dataset/4  
+
 
 ### 3. FoodSeg103 (optional, backup)
 
 Pixel-level segmentation
 
 Helps with multi-food plate detection
+
+Unable to find link so far
 
 
 ## Nutrition Data
@@ -71,6 +77,8 @@ We integrate:
 USDA FoodData Central API
 
 OpenFoodFacts API (backup)
+
+Sign up for a key here: https://fdc.nal.usda.gov/api-key-signup  
 
 ## General Structure of Project :
 FoodVision/  
