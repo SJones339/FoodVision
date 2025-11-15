@@ -1,0 +1,12 @@
+torch
+torchvision
+torchaudio
+ultralytics
+fastapi
+uvicorn
+pillow
+numpy
+requests
+python-multipart
+jupyter
+pydantic
