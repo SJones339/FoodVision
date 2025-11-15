@@ -73,20 +73,20 @@ USDA FoodData Central API
 OpenFoodFacts API (backup)
 
 ## General Structure of Project :
-FoodVision/
-│── data/                                   # temp downloaded images, processed crops
-│── datasets/                               # Food-101, FoodX-251, FoodSeg103
-│── src/
-│   ├── classification/                     # EfficientNet classifier code
-│   ├── detection/                          # YOLO detection pipeline
-│   ├── nutrition_pipeline/                 # USDA API + matching
-│   ├── api/                                # FastAPI backend
-│   └── utils/                              # helpers
-│── notebooks/                              # Jupyter notebooks
-│── models/                                 # saved .pt or .h5 models
-│── mobile/                                 # mobile integration (React Native/Flutter)
-│── requirements.txt
-│── README.md
+FoodVision/  
+│── data/                                   # temp downloaded images, processed crops  
+│── datasets/                               # Food-101, FoodX-251, FoodSeg103  
+│── src/  
+│   ├── classification/                     # EfficientNet classifier code  
+│   ├── detection/                          # YOLO detection pipeline  
+│   ├── nutrition_pipeline/                 # USDA API + matching  
+│   ├── api/                                # FastAPI backend  
+│   └── utils/                              # helpers  
+│── notebooks/                              # Jupyter notebooks  
+│── models/                                 # saved .pt or .h5 models  
+│── mobile/                                 # mobile integration (React Native/Flutter)  
+│── requirements.txt  
+│── README.md  
 
 ## Contributors
 
