@@ -47,9 +47,6 @@ We use three major datasets:
 
 Good for initial classifier training
 
-Download and add to corresponding folder here: https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/  
-
-
 ### 2. FoodX-251
 
 251 fine-grained classes
@@ -58,16 +55,37 @@ Real-world images
 
 Used for classifier fine-tuning
 
-Download and add to corresponding folder here: https://universe.roboflow.com/foodx251/foodx-251/dataset/4  
-
-
-### 3. FoodSeg103 (optional, backup)
+### 3. FoodSeg103
 
 Pixel-level segmentation
 
 Helps with multi-food plate detection
 
-Unable to find link so far
+## Downloading Datasets
+
+To download all datasets, run:
+
+```bash
+python download_datasets.py --all
+```
+
+To download specific datasets:
+
+```bash
+# Download FoodSeg103 (with YOLO conversion)
+python download_datasets.py --foodseg103 --convert-yolo
+
+# Download Food-101
+python download_datasets.py --food101
+
+# Download FoodX-251 (requires Roboflow API key)
+export ROBOFLOW_API_KEY="your_key_here"
+python download_datasets.py --foodx251
+```
+
+**Note**: FoodX-251 requires a Roboflow API key. Get one at https://roboflow.com/
+
+The datasets will be downloaded to the `datasets/` directory.
 
 
 ## Nutrition Data

@@ -11,3 +11,11 @@ python-multipart
 jupyter
 pydantic
 python-dotenv
+tqdm
+datasets
+roboflow
+opencv-python
+pyyaml
+efficientnet-pytorch
+matplotlib
+pandas

@@ -1,0 +1,10 @@
+{
+  "efficientnet": {
+    "metrics": {
+      "best_val_acc": 85.2990099009901,
+      "training_time": 10021.907680988312
+    },
+    "final_train_acc": 93.88778877887789,
+    "final_val_acc": 85.2990099009901
+  }
+}

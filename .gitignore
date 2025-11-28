@@ -205,3 +205,27 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Datasets and data files (too large for git)
+datasets/food101/
+datasets/foodseg103/
+datasets/foodx251/
+data/processed/
+data/raw/
+data/foodseg_pp/
+
+# Model files (commented out to allow pushing trained models for teammates)
+# models/*.pt
+# models/*.pth
+# models/*.h5
+# models/*.onnx
+# models/*.pb
+# *.pt
+# *.pth
+# *.h5
+# *.onnx
+# *.pb
+
+# But ignore very large model files (if any)
+models/*.safetensors
+models/*.ckpt
