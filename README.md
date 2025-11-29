@@ -35,47 +35,43 @@ Image → YOLOv8 (object detection)
   ]
 }
 
-## Datasets
+## Quick Start
 
-We use three major datasets:
-
-### 1. Food-101
-
- 101 food classes
-
-101,000 images
-
-Good for initial classifier training
-
-### 2. FoodX-251
-
-251 fine-grained classes
-
-Real-world images
-
-Used for classifier fine-tuning
-
-### 3. FoodSeg103
-
-Pixel-level segmentation
-
-Helps with multi-food plate detection
-
-## Downloading Datasets
-
-To download all datasets, run:
+**The trained models are included - you can use the pipeline immediately!**
 
 ```bash
-python download_datasets.py --all
+# Install dependencies
+pip install ultralytics torch efficientnet-pytorch pillow requests
+
+# Test the pipeline
+python test_pipeline.py meal.jpg
 ```
 
-To download specific datasets:
+See [SETUP_AND_USAGE.md](SETUP_AND_USAGE.md) for detailed setup and usage instructions.
+
+## Datasets
+
+**Important**: Datasets are NOT included in the repository (too large for git).
+
+**You DON'T need datasets to use the pipeline** - trained models are already included!
+
+**You DO need datasets if you want to retrain models** (see below).
+
+### Available Datasets
+
+1. **Food-101** - 101 food classes, 101,000 images (for classifier training)
+2. **FoodSeg103** - 104 food classes, pixel-level segmentation (for YOLO training)
+3. **FoodX-251** - 251 fine-grained classes (for advanced training)
+
+### Downloading Datasets (Optional)
+
+Only needed if you want to retrain models:
 
 ```bash
-# Download FoodSeg103 (with YOLO conversion)
+# Download FoodSeg103 for YOLO training (1.7GB)
 python download_datasets.py --foodseg103 --convert-yolo
 
-# Download Food-101
+# Download Food-101 for classifier training
 python download_datasets.py --food101
 
 # Download FoodX-251 (requires Roboflow API key)
@@ -85,18 +81,19 @@ python download_datasets.py --foodx251
 
 **Note**: FoodX-251 requires a Roboflow API key. Get one at https://roboflow.com/
 
-The datasets will be downloaded to the `datasets/` directory.
+For more details, see [SETUP_AND_USAGE.md](SETUP_AND_USAGE.md).
 
 
 ## Nutrition Data
 
-We integrate:
+The pipeline integrates with USDA FoodData Central API to provide calories and macronutrients for detected foods.
 
-USDA FoodData Central API
+**Setup:**
+1. Get a free API key: https://fdc.nal.usda.gov/api-key-signup
+2. Add to `.env` file: `USDA_API_KEY=your_key_here`
+3. Test with: `python test_pipeline.py meal.jpg --nutrition`
 
-OpenFoodFacts API (backup)
-
-Sign up for a key here: https://fdc.nal.usda.gov/api-key-signup  
+See [SETUP_AND_USAGE.md](SETUP_AND_USAGE.md) for detailed nutrition integration guide.  
 
 ## General Structure of Project :
 FoodVision/  

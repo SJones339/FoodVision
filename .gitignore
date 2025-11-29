@@ -206,7 +206,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Datasets and data files (too large for git)
+# Large datasets (too large for git - teammates can download)
+datasets/foodseg_pp/
 datasets/food101/
 datasets/foodseg103/
 datasets/foodx251/
@@ -214,18 +215,33 @@ data/processed/
 data/raw/
 data/foodseg_pp/
 
-# Model files (commented out to allow pushing trained models for teammates)
-# models/*.pt
-# models/*.pth
-# models/*.h5
-# models/*.onnx
-# models/*.pb
-# *.pt
-# *.pth
-# *.h5
-# *.onnx
-# *.pb
+# Model files - allow trained models but ignore pretrained downloads
+# First, explicitly allow trained models (teammates need them)
+!models/yolov8*_food_best.pt
+!models/efficientnet_best.pth
+!models/custom_cnn_best.pth
 
-# But ignore very large model files (if any)
-models/*.safetensors
-models/*.ckpt
+# Ignore pretrained model downloads in root directory (can be re-downloaded)
+/yolov8n-seg.pt
+/yolov8s-seg.pt
+/yolov8m-seg.pt
+/yolov8l-seg.pt
+/yolov8x-seg.pt
+/yolov8*.pth
+*.safetensors
+*.ckpt
+
+# Training runs and artifacts (too large, can be regenerated)
+runs/
+wandb/
+mlruns/
+
+# Cache files (personal data, can be regenerated)
+data/nutrition_cache.json
+*.cache
+.cache/
+
+# Test results (can be regenerated)
+models/pipeline_results.json
+models/pipeline_result.jpg
+data/processed/crops/

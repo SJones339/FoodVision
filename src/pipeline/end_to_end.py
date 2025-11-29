@@ -31,6 +31,14 @@ except ImportError:
 
 from torchvision import transforms
 
+# Import nutrition API (optional)
+try:
+    from nutrition_pipeline.nutrition_api import NutritionAPI
+    NUTRITION_AVAILABLE = True
+except ImportError:
+    NUTRITION_AVAILABLE = False
+    NutritionAPI = None
+
 
 class FoodVisionPipeline:
     """
@@ -48,7 +56,9 @@ class FoodVisionPipeline:
                  detection_model_path=None,
                  classification_model_path='models/efficientnet_best.pth',
                  device='auto',
-                 conf_threshold=0.25):
+                 conf_threshold=0.25,
+                 usda_api_key=None,
+                 include_nutrition=True):
         """
         Initialize pipeline with detection and classification models.
         
@@ -57,6 +67,8 @@ class FoodVisionPipeline:
             classification_model_path: Path to EfficientNet model
             device: 'auto', 'cuda', 'mps', or 'cpu'
             conf_threshold: Confidence threshold for detection
+            usda_api_key: USDA API key for nutrition data (optional)
+            include_nutrition: Whether to fetch nutrition data (default: True)
         """
         # Auto-detect device
         if device == 'auto':
@@ -96,6 +108,21 @@ class FoodVisionPipeline:
         
         # Load class names (Food-101)
         self.class_names = self._load_class_names()
+        
+        # Initialize nutrition API (optional)
+        self.include_nutrition = include_nutrition and NUTRITION_AVAILABLE
+        if self.include_nutrition:
+            try:
+                self.nutrition_api = NutritionAPI(api_key=usda_api_key)
+                print("✓ Nutrition API initialized")
+            except Exception as e:
+                print(f"⚠️  Could not initialize Nutrition API: {e}")
+                self.include_nutrition = False
+                self.nutrition_api = None
+        else:
+            self.nutrition_api = None
+            if include_nutrition and not NUTRITION_AVAILABLE:
+                print("⚠️  Nutrition API not available (module not found)")
         
         print("✓ Pipeline initialized!")
     
@@ -196,16 +223,17 @@ class FoodVisionPipeline:
             'top_k': top_classes
         }
     
-    def process_image(self, image_path, save_crops=False):
+    def process_image(self, image_path, save_crops=False, include_nutrition=None):
         """
-        Complete pipeline: Detect → Classify
+        Complete pipeline: Detect → Classify → Nutrition (optional)
         
         Args:
             image_path: Path to input image
             save_crops: Whether to save cropped regions for debugging
+            include_nutrition: Override default nutrition lookup setting
             
         Returns:
-            Dict with detected foods and classifications
+            Dict with detected foods, classifications, and nutrition data
         """
         image_path = Path(image_path)
         if not image_path.exists():
@@ -273,13 +301,47 @@ class FoodVisionPipeline:
             print(f"  Item {i+1}: {classification['predicted_class']} "
                   f"(det: {det['confidence']:.2f}, cls: {classification['confidence']:.2f})")
         
+        # Step 3: Get nutrition data (optional)
+        should_get_nutrition = include_nutrition if include_nutrition is not None else self.include_nutrition
+        if should_get_nutrition and self.nutrition_api:
+            print("\nStep 3: Fetching nutrition data from USDA...")
+            results = self.nutrition_api.get_nutrition_for_items(results)
+            
+            # Print nutrition summary
+            total_calories = 0
+            for item in results:
+                calories = item.get('calories')
+                if calories:
+                    total_calories += calories
+                    print(f"  {item['food_name']}: {calories:.0f} cal")
+                else:
+                    print(f"  {item['food_name']}: No nutrition data found")
+            
+            if total_calories > 0:
+                print(f"\n  Total calories: {total_calories:.0f}")
+        else:
+            if should_get_nutrition:
+                print("\n⚠️  Nutrition lookup requested but API not available")
+        
         print("\n" + "=" * 60)
         print(f"✓ Processed {len(results)} food items")
+        
+        # Calculate totals if nutrition data is available
+        total_calories = sum(item.get('calories', 0) or 0 for item in results)
+        total_protein = sum(item.get('protein', 0) or 0 for item in results)
+        total_carbs = sum(item.get('carbs', 0) or 0 for item in results)
+        total_fat = sum(item.get('fat', 0) or 0 for item in results)
         
         return {
             'image_path': str(image_path),
             'num_detections': len(detections),
-            'items': results
+            'items': results,
+            'nutrition_summary': {
+                'total_calories': total_calories if total_calories > 0 else None,
+                'total_protein': total_protein if total_protein > 0 else None,
+                'total_carbs': total_carbs if total_carbs > 0 else None,
+                'total_fat': total_fat if total_fat > 0 else None,
+            }
         }
     
     def visualize_results(self, image_path, results, save_path=None):
