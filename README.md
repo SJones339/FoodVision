@@ -35,8 +35,8 @@ Image → YOLOv8-seg (segment + classify foods)
 ## Quick Start
 
 ```bash
-# Install
-pip install -r requirements.txt
+# Install dependencies
+python -m pip install -r requirements.txt
 
 # Set USDA key (optional, but required for macros)
 export USDA_API_KEY="your_key_here"
@@ -44,6 +44,17 @@ export USDA_API_KEY="your_key_here"
 # Run the web app
 streamlit run app.py
 ```
+
+### Notes / common issues
+
+- **First run is slow**: MiDaS may download weights the first time you upload an image.
+- **If `streamlit` uses the wrong Python**: run Streamlit via Python:
+
+```bash
+python -m streamlit run app.py
+```
+
+- **No USDA key**: the app will still detect foods, but macros/totals will be blank.
 
 ## Notebook (report + experiments)
 
